@@ -24,14 +24,14 @@ const Configuration = () => {
             </PrivateRoute>
           }
         />
-        {/* <Route
-          path="/tasks"
+         <Route
+          path="/completed-tasks"
           element={
             <PrivateRoute>
-              <AppWrapper />
+              <CompletedTasks />
             </PrivateRoute>
           }
-        /> */}
+        />
       
       </Routes>
     </>
