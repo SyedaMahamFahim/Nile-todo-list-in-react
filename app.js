@@ -16,4 +16,9 @@ app.use("/api/v1", todoRoute);
 // Middleware for error
 app.use(errorMiddleware)
 
+app.get('/', function (req, res) {
+   
+    res.status(200).send("Hello World");
+    
+ })
 module.exports = app;
