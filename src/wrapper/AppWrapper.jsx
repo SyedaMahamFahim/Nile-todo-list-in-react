@@ -1,4 +1,5 @@
 import React from "react";
+import { Link as RouterLink } from "react-router-dom";
 import {
   IconButton,
   Avatar,
@@ -20,55 +21,62 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
+import { FiHome, FiMenu, FiBell, FiChevronDown } from "react-icons/fi";
+
+import { TiTickOutline } from "react-icons/ti";
+import { RiStickyNoteLine } from "react-icons/ri";
 import {
-  FiHome,
-  FiTrendingUp,
-  FiCompass,
-  FiStar,
-  FiSettings,
-  FiMenu,
-  FiBell,
-  FiChevronDown,
-} from "react-icons/fi";
-
-
+  MdOutlineAssignmentInd,
+  MdOutlinePendingActions,
+} from "react-icons/md";
+import { VscReport } from "react-icons/vsc";
 const LinkItems = [
-  { name: "Home", icon: FiHome },
-  { name: "Trending", icon: FiTrendingUp },
-  { name: "Explore", icon: FiCompass },
-  { name: "Favourites", icon: FiStar },
-  { name: "Settings", icon: FiSettings },
+  { name: "All Tasks", url: "/home", icon: FiHome },
+  { name: "Create a Tasks", url: "/add-tasks", icon: RiStickyNoteLine },
+  { name: "Completed Tasks", url: "/completed-tasks", icon: TiTickOutline },
+  {
+    name: "Pending Tasks",
+    url: "/pending-tasks",
+    icon: MdOutlinePendingActions,
+  },
+  {
+    name: "Assignee Tasks",
+    url: "/assigned-tasks",
+    icon: MdOutlineAssignmentInd,
+  },
+  { name: "Reporter Tasks", url: "/reporter-tasks", icon: VscReport },
 ];
 
-const AppWrapper=(Components) => function HOC() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  return (
-    <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
-      <SidebarContent
-        onClose={() => onClose}
-        display={{ base: "none", md: "block" }}
-      />
-      <Drawer
-        autoFocus={false}
-        isOpen={isOpen}
-        placement="left"
-        onClose={onClose}
-        returnFocusOnClose={false}
-        onOverlayClick={onClose}
-        size="full"
-      >
-        <DrawerContent>
-          <SidebarContent onClose={onClose} />
-        </DrawerContent>
-      </Drawer>
-      {/* mobilenav */}
-      <MobileNav onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 60 }} p="4">
-        <Components/>
+const AppWrapper = (Components) =>
+  function HOC() {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    return (
+      <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
+        <SidebarContent
+          onClose={() => onClose}
+          display={{ base: "none", md: "block" }}
+        />
+        <Drawer
+          autoFocus={false}
+          isOpen={isOpen}
+          placement="left"
+          onClose={onClose}
+          returnFocusOnClose={false}
+          onOverlayClick={onClose}
+          size="full"
+        >
+          <DrawerContent>
+            <SidebarContent onClose={onClose} />
+          </DrawerContent>
+        </Drawer>
+        {/* mobilenav */}
+        <MobileNav onOpen={onOpen} />
+        <Box ml={{ base: 0, md: 60 }} p="4">
+          <Components />
+        </Box>
       </Box>
-    </Box>
-  );
-}
+    );
+  };
 
 const SidebarContent = ({ onClose, ...rest }) => {
   return (
@@ -84,14 +92,16 @@ const SidebarContent = ({ onClose, ...rest }) => {
     >
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
         <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-          Logo
+          Nile Tasks
         </Text>
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
-          {link.name}
-        </NavItem>
+        <RouterLink to={link.url}>
+          <NavItem key={link.name} icon={link.icon}>
+            {link.name}
+          </NavItem>
+        </RouterLink>
       ))}
     </Box>
   );
@@ -127,7 +137,7 @@ const NavItem = ({ icon, children, ...rest }) => {
             as={icon}
           />
         )}
-        {children}  
+        {children}
       </Flex>
     </Link>
   );
@@ -217,4 +227,4 @@ const MobileNav = ({ onOpen, ...rest }) => {
   );
 };
 
-export default AppWrapper
+export default AppWrapper;
