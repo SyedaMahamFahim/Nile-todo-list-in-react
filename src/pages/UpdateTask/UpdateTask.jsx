@@ -2,7 +2,7 @@ import React from "react";
 import AppWrapper from "../../wrapper/AppWrapper";
 import { SectionTitle, TaskForm } from "../../components/index";
 import { Box } from "@chakra-ui/react";
-const AddTask = () => {
+const UpdateTask = () => {
   return (
     <>
       <SectionTitle text={"Add New Tasks"} align="center" variant="h1" />
@@ -13,4 +13,4 @@ const AddTask = () => {
   );
 };
 
-export default AppWrapper(AddTask);
+export default AppWrapper(UpdateTask);

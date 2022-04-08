@@ -1,7 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import { LoginSignup, Home ,CompletedTasks} from "../pages/index";
-import AppWrapper from "../wrapper/AppWrapper";
+import { LoginSignup, Home ,CompletedTasks, AddTask} from "../pages/index";
 import PrivateRoute from "./PrivateRoute";
 const Configuration = () => {
   return (
@@ -17,10 +16,10 @@ const Configuration = () => {
           }
         />
         <Route
-          path="/completed-tasks"
+          path="/add-tasks"
           element={
             <PrivateRoute>
-              <CompletedTasks />
+              <AddTask />
             </PrivateRoute>
           }
         />
