@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import axios from "axios";
 // import todoUrl from "../../configuration/todoUrl";
 import {
@@ -34,12 +34,12 @@ const TaskForm = () => {
 
   const errorHandler = () => {
     if (!title || !desc || !tag || !status) {
-      // if (errors) {
+      if (errors) {
         toast.error("Kindly, fill the required fields!", {
           toastId: "todoerror1",
           autoClose: 4000,
         });
-      // }
+      }
       setErrors(true);
       setLoading(false);
     }
@@ -62,7 +62,7 @@ const TaskForm = () => {
     console.log(allFieldsValue)
     if (!errorHandler()) {
       await axios
-        .post(`https://nile-todo-app-backend.herokuapp.com/api/v1/todo-controllers/add-todo/`, allFieldsValue)
+        .post(`http://localhost:8000/api/v1/todo-controllers/add-todo/`, allFieldsValue)
 
         .then(({ data }) => {
           console.log(data);
@@ -84,7 +84,7 @@ const TaskForm = () => {
       setLoading(false);
     }
   };
-  useEffect(() => {}, []);
+
 
   return (
     <>
