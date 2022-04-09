@@ -5,6 +5,8 @@ const ErrorHander = require("../utils/errorhander");
 
 // Get All Todo 
 exports.getAllTodos = catchAsyncErrors(async (req, res, _) => {
+  res.set('Access-Control-Allow-Origin', '*');
+
     const todo = await Todo.find();
   
     res.status(200).json({
@@ -15,6 +17,8 @@ exports.getAllTodos = catchAsyncErrors(async (req, res, _) => {
 
 // Create Todo
 exports.addTodo = catchAsyncErrors(async (req, res, _) => {
+  res.set('Access-Control-Allow-Origin', '*');
+
   const { emailAddress, assignUserEmailAddress, title, desc, status, tag } =
     req.body;
 
@@ -36,6 +40,8 @@ exports.addTodo = catchAsyncErrors(async (req, res, _) => {
 
 // Update Todo
 exports.updateTodo = catchAsyncErrors(async (req, res, next) => {
+  res.set('Access-Control-Allow-Origin', '*');
+
     let todoList = await Todo.findById(req.params.id);
   
     if (!todoList) {
@@ -56,6 +62,8 @@ exports.updateTodo = catchAsyncErrors(async (req, res, next) => {
 
 // Delete Todo
 exports.deleteTodo=catchAsyncErrors(async(req,res,next)=>{
+  res.set('Access-Control-Allow-Origin', '*');
+
     let todo = await Todo.findById(req.params.id);
   
     if (!todo) {
@@ -72,6 +80,8 @@ exports.deleteTodo=catchAsyncErrors(async(req,res,next)=>{
 
 // Get Todo Details
 exports.getTodo = catchAsyncErrors(async (req, res, next) => {
+  res.set('Access-Control-Allow-Origin', '*');
+
     const todo = await Todo.findById(req.params.id);
   
     if (!todo) {
