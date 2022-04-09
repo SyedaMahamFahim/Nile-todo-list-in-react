@@ -1,8 +1,9 @@
 const app = require("./app");
 const database=require('./database/configuration')
 const PORT=process.env.PORT || 8000
+const cors = require('cors')
 
-
+app.use(cors())
 //Insurance to prevent cors error
 
 app.use((req, res, next) => {
