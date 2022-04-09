@@ -42,7 +42,7 @@ app.use("/api/v1", todoRoute);
 
 app.get('/', function (req, res) {
    
-    res.status(200).send("Hello World");
+    res.status(200).send("Updated Hello World");
     
  })
 module.exports = app;
