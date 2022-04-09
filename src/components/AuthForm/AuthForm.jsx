@@ -28,7 +28,7 @@ const AuthForm = () => {
   const [url, setUrl] = useState(`${baseUrl}login`);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(false);
-  const [token, setToken] = useState("");
+  // const [token, setToken] = useState("");
   const errorHandler = () => {
     if (!email || !password) {
       if (errors) {
@@ -61,16 +61,16 @@ const AuthForm = () => {
   const loginForm = async (e) => {
     e.preventDefault();
     setLoading(true);
-
+   localStorage.setItem('userEmail',email)
     errorHandler();
     if (!errorHandler()) {
-      axios
+      await axios
         .post(url, {
           email: email,
           password: password,
         })
         .then(({ data: { token } }) => {
-          setToken(localStorage.setItem("token", token));
+          localStorage.setItem("token", token);
           navigate("/home");
           setLoading(false);
         })
