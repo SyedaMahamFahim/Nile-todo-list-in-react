@@ -28,12 +28,22 @@ import { RiStickyNoteLine } from "react-icons/ri";
 import {
   MdOutlineAssignmentInd,
   MdOutlinePendingActions,
+  MdNotificationsActive
 } from "react-icons/md";
 import { VscReport } from "react-icons/vsc";
+import {SiReadthedocs} from 'react-icons/si'
+
 const LinkItems = [
-  { name: "All Tasks", url: "/home", icon: FiHome },
+  { name: "Home", url: "/home", icon: FiHome },
+  {
+    name: "All Tasks",
+    url: "/get-all-tasks",
+    icon: SiReadthedocs,
+  },
   { name: "Create a Tasks", url: "/add-tasks", icon: RiStickyNoteLine },
   { name: "Completed Tasks", url: "/completed-tasks", icon: TiTickOutline },
+  { name: "Active Tasks", url: "/active-tasks", icon: MdNotificationsActive },
+
   {
     name: "Pending Tasks",
     url: "/pending-tasks",
@@ -97,8 +107,8 @@ const SidebarContent = ({ onClose, ...rest }) => {
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <RouterLink to={link.url}>
-          <NavItem key={link.name} icon={link.icon}>
+        <RouterLink to={link.url} key={link.url}>
+          <NavItem  icon={link.icon}>
             {link.name}
           </NavItem>
         </RouterLink>

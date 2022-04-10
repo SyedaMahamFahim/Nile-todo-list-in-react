@@ -1,18 +1,18 @@
 import React from 'react'
 import AppWrapper from "../../wrapper/AppWrapper";
 import GetApiWrapper from "../../wrapper/GetApiWrapper";
-const CompletedTasks = () => {
+const ActiveTask = () => {
   return (
     <>
     <GetApiWrapper
-    status={"completed"}
+    status={"active"}
     endPoint={"get-all-todos"}
-    pageTitle={'Completed Tasks'}
-    pageSubTitle={'You Have Successfully Completed The Following Tasks'}
+    pageTitle={'Active Tasks'}
+    pageSubTitle={'Current Important Tasks'}
     />
           </>
   )
 }
 
-export default AppWrapper(CompletedTasks);
+export default AppWrapper(ActiveTask);
 

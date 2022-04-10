@@ -6,6 +6,8 @@ import AssigneeTasks from "./AssigneeTasks/AssigneeTasks";
 import PendingTasks from "./PendingTasks/PendingTasks";
 import ReporterTasks from "./ReporterTasks/ReporterTasks";
 import UpdateTask from './UpdateTask/UpdateTask'
+import GetAllTasks from "./GetAllTasks/GetAllTasks";
+import ActiveTask from "./ActiveTask/ActiveTask";
 export{
     LoginSignup,
     Home,
@@ -14,5 +16,7 @@ export{
     AssigneeTasks,
     PendingTasks,
     ReporterTasks,
-    UpdateTask
+    UpdateTask,
+    GetAllTasks,
+    ActiveTask 
 }

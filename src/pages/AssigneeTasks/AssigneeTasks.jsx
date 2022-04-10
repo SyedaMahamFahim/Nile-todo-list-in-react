@@ -1,19 +1,19 @@
-import React from "react";
+import React from 'react'
 import AppWrapper from "../../wrapper/AppWrapper";
-import { SectionTitle, TaskCard } from "../../components/index";
-import { Box } from "@chakra-ui/react";
-
-const AssigneeTasks = () => {
+import GetApiWrapper from "../../wrapper/GetApiWrapper";
+const ReporterTasks = () => {
   return (
     <>
-      <SectionTitle text={"Assignee Tasks"} align="center" variant="h1"
-      subText={"The tasks has been assigned to you by someone"}
-      />
-      <Box mt={{ base: "2rem" }} m={{ md: "1.5rem", lg: "3rem" }}>
-        <TaskCard/>
-      </Box>
-    </>
-  );
-};
+    <GetApiWrapper
+    status={"pending"}
+    endPoint={"get-all-todos"}
+    pageTitle={'Assignee Tasks'}
+    pageSubTitle={'The tasks has been assigned to you by someone'}
+    />
+          </>
+  )
+}
 
-export default AppWrapper(AssigneeTasks);
+export default AppWrapper(ReporterTasks);
+
+

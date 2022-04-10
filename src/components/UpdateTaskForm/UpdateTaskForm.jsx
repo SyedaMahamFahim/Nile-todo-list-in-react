@@ -20,7 +20,7 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const TaskForm = () => {
+const UpdateTaskForm = ({sendDataToParent}) => {
   const { isOpen, onToggle } = useDisclosure();
 
   const [title, setTitle] = useState("");
@@ -71,9 +71,7 @@ const TaskForm = () => {
             autoClose: 1000,
             toastId: "todoerror1",
           });
-          
         })
-        
         .catch((err) => {
           setErrors(true);
           toast.error(err.message, {
@@ -85,7 +83,7 @@ const TaskForm = () => {
 
       setLoading(false);
       
-      
+      sendDataToParent(true)
     }
   };
 
@@ -191,4 +189,4 @@ const TaskForm = () => {
   );
 };
 
-export default TaskForm;
+export default UpdateTaskForm;

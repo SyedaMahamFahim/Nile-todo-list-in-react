@@ -9,6 +9,8 @@ import {
   PendingTasks,
   ReporterTasks,
   UpdateTask,
+  GetAllTasks,
+  ActiveTask,
 } from "../pages/index";
 import PrivateRoute from "./PrivateRoute";
 const Configuration = () => {
@@ -50,6 +52,22 @@ const Configuration = () => {
           }
         />
          <Route
+          path="/active-tasks"
+          element={
+            <PrivateRoute>
+              <ActiveTask />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/get-all-tasks"
+          element={
+            <PrivateRoute>
+              <GetAllTasks />
+            </PrivateRoute>
+          }
+        />
+         <Route
           path="/assigned-tasks"
           element={
             <PrivateRoute>
@@ -66,7 +84,7 @@ const Configuration = () => {
           }
         />
         <Route
-          path="/update-tasks/:id"
+          path="/update-task/:id"
           element={
             <PrivateRoute>
               <UpdateTask/>

@@ -4,11 +4,13 @@ import SectionTitle from "./SectionTitle/SectionTitle";
 import TaskCard from "./TaskCard/TaskCard";
 import TaskForm from "./TaskForm/TaskForm";
 import BlueBtn from "./Buttons/BlueBtn";
+import UpdateTaskForm from "./UpdateTaskForm/UpdateTaskForm";
 export{
     AuthForm,
     Navbar,
     SectionTitle,
     TaskCard,
     TaskForm,
-    BlueBtn
+    BlueBtn,
+    UpdateTaskForm
 }
