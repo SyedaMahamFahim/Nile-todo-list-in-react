@@ -41,6 +41,9 @@ const GetApiWrapper = ({ status, endPoint, pageTitle, pageSubTitle }) => {
         const filterData = data.todo.filter(
           (val) => val.emailAddress === localStorage.getItem("userEmail")
         );
+        const priorityTask  = data.todo.filter(
+          (val) => val.status === 'active' || val.status ==='pending'
+        );
         const reporterTasks = filterData.filter(
           (val) => val.assignUserEmailAddress !== "none"
         );
@@ -54,7 +57,12 @@ const GetApiWrapper = ({ status, endPoint, pageTitle, pageSubTitle }) => {
         } else if (status === "assignee-task") {
           setCardDetails([...assigneeTasks]);
           console.log(assigneeTasks,'assigneeTasks')
-        } else {
+        } 
+        else if (status === "pending || active") {
+          setCardDetails([...priorityTask]);
+          console.log(priorityTask,'priorityTask')
+        }
+        else {
           const filterStatus = filterData.filter(
             (val) => val.status === status
           );
@@ -108,6 +116,7 @@ const GetApiWrapper = ({ status, endPoint, pageTitle, pageSubTitle }) => {
             {cardDetails.length !== 0 ? (
               cardDetails.map((cardDetail, index) => (
                 <TaskCard
+                priorityTaskStatus={status === 'pending || active' ? 'pending || active' :'none' }
                   key={cardDetail._id}
                   cardDetail={cardDetail}
                   index={index}
@@ -132,6 +141,8 @@ const GetApiWrapper = ({ status, endPoint, pageTitle, pageSubTitle }) => {
                           ? "Reporting"
                           : status === "assignee-task"
                           ? "Assignee"
+                          : status === "pending || active"
+                          ? "Priority"
                           : "All"
                       } Tasks`}
                       subText={""}

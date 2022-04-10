@@ -1,4 +1,4 @@
-import React, {useRef } from "react";
+import React, { useRef } from "react";
 import dateFormat from "dateformat";
 import {
   Heading,
@@ -21,90 +21,85 @@ import todoUrl from "../../configuration/todoUrl";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {Link, useNavigate} from 'react-router-dom'
+import { Link, useNavigate } from "react-router-dom";
 
 const TaskCard = ({
-  cardDetail: {
-    title,
-    desc,
-    tag,
-    status,
-    assignUserEmailAddress,
-    _id,
-    createdAt,
-  },
+  cardDetail: { title, desc, tag, status, _id, createdAt },
   index,
-  sendDataToParent
-
+  sendDataToParent,
+  priorityTaskStatus,
 }) => {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
 
-
   const redirectToTask = (id) => {
-    navigate(`/update-task/${id}`)
+    navigate(`/update-task/${id}`);
   };
-
+const redirectToTaskPage =(id)=>{
+  navigate(`/task/${_id}`);
+}
   const removeTask = async (id) => {
     await axios
-    .delete(`${todoUrl}/api/v1/todo-controllers/delete-todo/${id}`)
-    .then(({ data }) => {
-      toast.success(data.message, {
-        autoClose: 1000,
-        toastId: "todoerror1",
+      .delete(`${todoUrl}/api/v1/todo-controllers/delete-todo/${id}`)
+      .then(({ data }) => {
+        toast.success(data.message, {
+          autoClose: 1000,
+          toastId: "todoerror1",
+        });
+        onClose();
+      })
+      .catch((err) => {
+        toast.error(err.message, {
+          autoClose: 1000,
+          toastId: "todoerror1",
+        });
       });
-      onClose()
-    })
-    .catch((err) => {
-      toast.error(err.message, {
-        autoClose: 1000,
-        toastId: "todoerror1",
-      });
-    });
 
-    sendDataToParent(true)
+    sendDataToParent(true);
   };
 
-  
   return (
     <>
-    <ToastContainer/>
-    
+      <ToastContainer />
+
       <Box
         my={{ base: "1rem" }}
         mx={{ base: "1rem", md: "1.5rem", lg: "1rem" }}
         mb={{ md: "1.5rem", lg: "2rem" }}
         maxW={"320px"}
         w={"full"}
-        bg={status === 'completed' ? '#7cde98a6':
-        status === 'pending' ? '#FFD19B': useColorModeValue("white", "gray.600")
-      }
+        bg={
+          status === "completed"
+            ? "#7cde98a6"
+            : status === "pending"
+            ? "#FFD19B"
+            : useColorModeValue("white", "gray.600")
+        }
         boxShadow={"2xl"}
         rounded={"lg"}
         p={6}
         textAlign={"center"}
       >
-        <Flex align={"center"}
-        justify={"space-between"} flexDirection={"row"}>
+        <Flex align={"center"} justify={"space-between"} flexDirection={"row"}>
           <Box>
-          <Text
-          fontWeight={600}
-          fontSize={"3xl"}
-          color={"gray.500"}
-          mb={4}
-          align={"left"}
-        >
-          #{index + 1}
-        </Text>
+            <Text
+              fontWeight={600}
+              fontSize={"3xl"}
+              color={"gray.500"}
+              mb={4}
+              align={"left"}
+            >
+              #{index + 1}
+            </Text>
           </Box>
           <Box color={"blue"}>
-          <Link to={`/task/${_id}`} >
-            View
-            </Link>
+            {priorityTaskStatus !== "pending || active" && (
+              <Link to={`/task/${_id}`}>View</Link>
+            )}
           </Box>
         </Flex>
-        
+
         <Heading fontSize={"2xl"} fontFamily={"body"}>
           {title.length < 7 ? title : `${title.slice(0, 15)} ...`}
         </Heading>
@@ -140,7 +135,8 @@ const TaskCard = ({
         </Stack>
 
         <Stack mt={8} direction={"row"} spacing={4}>
-          <Button
+          {priorityTaskStatus !== "pending || active" && (
+            <Button
             flex={1}
             fontSize={"sm"}
             rounded={"full"}
@@ -150,7 +146,11 @@ const TaskCard = ({
             onClick={onOpen}
           >
             Remove
-          </Button>
+          </Button>          )}
+          
+
+          {priorityTaskStatus !== "pending || active" ?
+          <>
           <Button
             flex={1}
             fontSize={"sm"}
@@ -170,9 +170,33 @@ const TaskCard = ({
           >
             Update
           </Button>
+          </> 
+          :
+          <Button
+            flex={1}
+            fontSize={"sm"}
+            rounded={"full"}
+            bg={"blue.400"}
+            color={"white"}
+            boxShadow={
+              "0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)"
+            }
+            _hover={{
+              bg: "blue.500",
+            }}
+            _focus={{
+              bg: "blue.500",
+            }}
+            onClick={() => redirectToTaskPage(_id)}
+          >
+            View
+          </Button>
+
+}
+          
         </Stack>
       </Box>
-    
+
       <AlertDialog
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}
@@ -194,11 +218,7 @@ const TaskCard = ({
               <Button ref={cancelRef} onClick={onClose}>
                 Cancel
               </Button>
-              <Button
-                colorScheme="red"
-        onClick={() => removeTask(_id)}
-                ml={3}
-              >
+              <Button colorScheme="red" onClick={() => removeTask(_id)} ml={3}>
                 Delete
               </Button>
             </AlertDialogFooter>
