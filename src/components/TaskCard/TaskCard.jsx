@@ -7,6 +7,7 @@ import {
   Stack,
   Button,
   Badge,
+  Flex,
   useColorModeValue,
   AlertDialog,
   AlertDialogBody,
@@ -21,7 +22,7 @@ import todoUrl from "../../configuration/todoUrl";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {useNavigate} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 
 const TaskCard = ({
   cardDetail: {
@@ -70,6 +71,7 @@ const TaskCard = ({
   return (
     <>
     <ToastContainer/>
+    {/* <Link to={`/task/${_id}`}> */}
       <Box
         my={{ base: "1rem" }}
         mx={{ base: "1rem", md: "1.5rem", lg: "1rem" }}
@@ -82,7 +84,10 @@ const TaskCard = ({
         p={6}
         textAlign={"center"}
       >
-        <Text
+        <Flex align={"center"}
+        justify={"space-between"} flexDirection={"row"}>
+          <Box>
+          <Text
           fontWeight={600}
           fontSize={"3xl"}
           color={"gray.500"}
@@ -91,6 +96,14 @@ const TaskCard = ({
         >
           #{index + 1}
         </Text>
+          </Box>
+          <Box color={"blue"}>
+          <Link to={`/task/${_id}`} >
+            View
+            </Link>
+          </Box>
+        </Flex>
+        
         <Heading fontSize={"2xl"} fontFamily={"body"}>
           {title.length < 7 ? title : `${title.slice(0, 15)} ...`}
         </Heading>
@@ -158,7 +171,7 @@ const TaskCard = ({
           </Button>
         </Stack>
       </Box>
-
+    {/* </Link> */}
       <AlertDialog
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}

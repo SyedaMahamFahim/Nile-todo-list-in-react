@@ -11,6 +11,7 @@ import {
   UpdateTask,
   GetAllTasks,
   ActiveTask,
+  SingleTask,
 } from "../pages/index";
 import PrivateRoute from "./PrivateRoute";
 const Configuration = () => {
@@ -88,6 +89,14 @@ const Configuration = () => {
           element={
             <PrivateRoute>
               <UpdateTask/>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/task/:id"
+          element={
+            <PrivateRoute>
+              <SingleTask/>
             </PrivateRoute>
           }
         />

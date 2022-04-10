@@ -8,6 +8,7 @@ import ReporterTasks from "./ReporterTasks/ReporterTasks";
 import UpdateTask from './UpdateTask/UpdateTask'
 import GetAllTasks from "./GetAllTasks/GetAllTasks";
 import ActiveTask from "./ActiveTask/ActiveTask";
+import SingleTask from "./SingleTask/SingleTask";
 export{
     LoginSignup,
     Home,
@@ -18,5 +19,6 @@ export{
     ReporterTasks,
     UpdateTask,
     GetAllTasks,
-    ActiveTask 
+    ActiveTask,
+    SingleTask
 }

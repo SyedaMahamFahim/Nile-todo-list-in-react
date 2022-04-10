@@ -1,6 +1,9 @@
-import React, { useState} from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import todoUrl from "../../configuration/todoUrl";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   FormControl,
   FormLabel,
@@ -12,15 +15,15 @@ import {
   Input,
   useColorModeValue,
   Switch,
-  useDisclosure,
   CircularProgress,
-  Center
+  Center,
+  useDisclosure,
 } from "@chakra-ui/react";
 
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
-const UpdateTaskForm = ({sendDataToParent}) => {
+const UpdateTaskForm = () => {
+  const navigate = useNavigate();
+  const params = useParams();
+  const id = params.id;
   const { isOpen, onToggle } = useDisclosure();
 
   const [title, setTitle] = useState("");
@@ -46,7 +49,27 @@ const UpdateTaskForm = ({sendDataToParent}) => {
     return errors;
   };
 
-  const formSubmission = async (e) => {
+  const getTaskData = async () => {
+    setLoading(true);
+    await axios
+      .get(`${todoUrl}/api/v1/todo-controllers/get-todo/${id}`)
+      .then(({ data: { todo } }) => {
+        setTitle(todo.title);
+        setDesc(todo.desc);
+        setTag(todo.tag);
+        setStatus(todo.status);
+        setAssignUser(todo.assignUserEmailAddress);
+        setLoading(false);
+      })
+      .catch((err) => {
+        toast.error(err.message, {
+          autoClose: 1000,
+          toastId: "todoerror1",
+        });
+      });
+  };
+
+  const updateTaskForm = async (e) => {
     e.preventDefault();
     setLoading(true);
     errorHandler();
@@ -59,19 +82,23 @@ const UpdateTaskForm = ({sendDataToParent}) => {
       emailAddress: localStorage.getItem("userEmail"),
     };
 
-    console.log(allFieldsValue)
+    console.log(allFieldsValue);
     if (!errorHandler()) {
       await axios
-        .post(`${todoUrl}/api/v1/todo-controllers/add-todo/`, allFieldsValue)
+        .put(
+          `${todoUrl}/api/v1/todo-controllers/update-todo/${id}`,
+          allFieldsValue
+        )
 
         .then(({ data }) => {
           console.log(data);
           setLoading(true);
-          toast.success(data.message, {
+          toast.success("Task Updated Successfully", {
             autoClose: 1000,
             toastId: "todoerror1",
           });
         })
+
         .catch((err) => {
           setErrors(true);
           toast.error(err.message, {
@@ -82,18 +109,21 @@ const UpdateTaskForm = ({sendDataToParent}) => {
         });
 
       setLoading(false);
-      
-      sendDataToParent(true)
     }
   };
 
+  useEffect(() => {
+    getTaskData();
+  }, []);
 
   return (
     <>
-     <ToastContainer />
+      <ToastContainer />
       {loading ? (
-        <Center h='50vh'> <CircularProgress isIndeterminate color="black" size={"3rem"}/></Center>
-       
+        <Center h="50vh">
+          {" "}
+          <CircularProgress isIndeterminate color="black" size={"3rem"} />
+        </Center>
       ) : (
         <>
           <Box
@@ -108,6 +138,7 @@ const UpdateTaskForm = ({sendDataToParent}) => {
                 id="title"
                 type="text"
                 name="title"
+                value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
             </FormControl>
@@ -117,6 +148,7 @@ const UpdateTaskForm = ({sendDataToParent}) => {
                 name="desc"
                 placeholder="Here is a sample placeholder"
                 size="sm"
+                value={desc}
                 onChange={(e) => setDesc(e.target.value)}
               />
             </FormControl>
@@ -126,6 +158,7 @@ const UpdateTaskForm = ({sendDataToParent}) => {
                 id="tag"
                 type="text"
                 name="tag"
+                value={tag}
                 onChange={(e) => setTag(e.target.value)}
               />
             </FormControl>
@@ -135,10 +168,12 @@ const UpdateTaskForm = ({sendDataToParent}) => {
                 id="status"
                 placeholder="Select select"
                 name="status"
+                value={status}
                 onChange={(e) => setStatus(e.target.value)}
               >
                 <option value={"active"}>Active</option>
                 <option value={"pending"}>Pending</option>
+                <option value={"completed"}>Completed</option>
               </Select>
             </FormControl>
             <FormControl display="flex" alignItems="center" mt={8}>
@@ -157,6 +192,7 @@ const UpdateTaskForm = ({sendDataToParent}) => {
                   id="assign-user"
                   type="email"
                   name="assignUser"
+                  value={assignUser}
                   onChange={(e) => setAssignUser(e.target.value)}
                 />
               </FormControl>
@@ -178,9 +214,9 @@ const UpdateTaskForm = ({sendDataToParent}) => {
               _focus={{
                 bg: "blue.500",
               }}
-              onClick={formSubmission}
+              onClick={updateTaskForm}
             >
-              Create Task
+              Update Task
             </Button>
           </Box>
         </>
