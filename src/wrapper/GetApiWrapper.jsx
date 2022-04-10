@@ -44,8 +44,8 @@ const GetApiWrapper = ({ status, endPoint, pageTitle, pageSubTitle }) => {
         const reporterTasks = filterData.filter(
           (val) => val.assignUserEmailAddress !== "none"
         );
-        const assigneeTasks = filterData.filter(
-          (val) => val.assignUserEmailAddress === val.email
+        const assigneeTasks = data.todo.filter(
+          (val) => val.assignUserEmailAddress === localStorage.getItem("userEmail")
         );
         if (status === "all") {
           setCardDetails([...filterData]);
@@ -53,6 +53,7 @@ const GetApiWrapper = ({ status, endPoint, pageTitle, pageSubTitle }) => {
           setCardDetails([...reporterTasks]);
         } else if (status === "assignee-task") {
           setCardDetails([...assigneeTasks]);
+          console.log(assigneeTasks,'assigneeTasks')
         } else {
           const filterStatus = filterData.filter(
             (val) => val.status === status

@@ -105,6 +105,17 @@ const SingleTask = () => {
               </Text>
             </Box>
             
+            {
+              data.assignUserEmailAddress !== 'none' && <>
+              <Divider/>
+              <Box mt={'1.75rem'}>
+                <Heading>Assigned By</Heading>
+                <Text fontWeight={600} color={"gray.500"} my={4}>
+                  {data.emailAddress}
+                </Text>
+              </Box>
+              </>
+            }
           </Box>
         </>
       )}

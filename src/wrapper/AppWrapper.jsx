@@ -1,5 +1,6 @@
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   IconButton,
   Avatar,
@@ -17,22 +18,22 @@ import {
   useDisclosure,
   Menu,
   MenuButton,
-  MenuDivider,
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
-import { FiHome, FiMenu, FiBell, FiChevronDown } from "react-icons/fi";
+import { FiHome, FiMenu,FiChevronDown } from "react-icons/fi";
 
 import { TiTickOutline } from "react-icons/ti";
 import { RiStickyNoteLine } from "react-icons/ri";
 import {
   MdOutlineAssignmentInd,
   MdOutlinePendingActions,
-  MdNotificationsActive
+  MdNotificationsActive,
 } from "react-icons/md";
 import { VscReport } from "react-icons/vsc";
-import {SiReadthedocs} from 'react-icons/si'
-
+import { SiReadthedocs } from "react-icons/si";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const LinkItems = [
   { name: "Home", url: "/home", icon: FiHome },
   {
@@ -59,8 +60,12 @@ const LinkItems = [
 
 const AppWrapper = (Components) =>
   function HOC() {
+  
     const { isOpen, onOpen, onClose } = useDisclosure();
     return (
+      <>
+       <ToastContainer/>
+      
       <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
         <SidebarContent
           onClose={() => onClose}
@@ -85,6 +90,7 @@ const AppWrapper = (Components) =>
           <Components />
         </Box>
       </Box>
+      </>
     );
   };
 
@@ -108,9 +114,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
       </Flex>
       {LinkItems.map((link) => (
         <RouterLink to={link.url} key={link.url}>
-          <NavItem  icon={link.icon}>
-            {link.name}
-          </NavItem>
+          <NavItem icon={link.icon}>{link.name}</NavItem>
         </RouterLink>
       ))}
     </Box>
@@ -154,6 +158,15 @@ const NavItem = ({ icon, children, ...rest }) => {
 };
 
 const MobileNav = ({ onOpen, ...rest }) => {
+  const navigate = useNavigate();
+  const signOut = () => {
+    localStorage.setItem("token", "");
+    toast.success('Logout Successfully', {
+      autoClose: 1000,
+      toastId: "todoerror1",
+    });
+    navigate('/')
+  };
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -180,16 +193,10 @@ const MobileNav = ({ onOpen, ...rest }) => {
         fontFamily="monospace"
         fontWeight="bold"
       >
-        Logo
+        Nile Tasks
       </Text>
 
       <HStack spacing={{ base: "0", md: "6" }}>
-        <IconButton
-          size="lg"
-          variant="ghost"
-          aria-label="open menu"
-          icon={<FiBell />}
-        />
         <Flex alignItems={"center"}>
           <Menu>
             <MenuButton
@@ -201,7 +208,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
                 <Avatar
                   size={"sm"}
                   src={
-                    "https://images.unsplash.com/photo-1619946794135-5bc917a27793?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
+                    "https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png"
                   }
                 />
                 <VStack
@@ -210,10 +217,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">Justina Clark</Text>
-                  <Text fontSize="xs" color="gray.600">
-                    Admin
-                  </Text>
+                  <Text fontSize="sm">{localStorage.getItem("userEmail")}</Text>
                 </VStack>
                 <Box display={{ base: "none", md: "flex" }}>
                   <FiChevronDown />
@@ -221,14 +225,10 @@ const MobileNav = ({ onOpen, ...rest }) => {
               </HStack>
             </MenuButton>
             <MenuList
-              bg={useColorModeValue("white", "gray.900")}
+              bg={useColorModeValue("white")}
               borderColor={useColorModeValue("gray.200", "gray.700")}
             >
-              <MenuItem>Profile</MenuItem>
-              <MenuItem>Settings</MenuItem>
-              <MenuItem>Billing</MenuItem>
-              <MenuDivider />
-              <MenuItem>Sign out</MenuItem>
+              <MenuItem onClick={signOut}>Sign out</MenuItem>
             </MenuList>
           </Menu>
         </Flex>

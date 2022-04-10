@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import todoUrl from "../../configuration/todoUrl";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -21,7 +21,6 @@ import {
 } from "@chakra-ui/react";
 
 const UpdateTaskForm = () => {
-  const navigate = useNavigate();
   const params = useParams();
   const id = params.id;
   const { isOpen, onToggle } = useDisclosure();

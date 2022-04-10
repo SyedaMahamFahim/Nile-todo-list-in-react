@@ -17,7 +17,6 @@ import {
   AlertDialogOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
-import { BsPersonCheckFill } from "react-icons/bs";
 import todoUrl from "../../configuration/todoUrl";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
