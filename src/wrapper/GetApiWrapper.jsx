@@ -12,17 +12,17 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 
-const GetApiWrapper = ({ status, endPoint,pageTitle,pageSubTitle }) => {
+const GetApiWrapper = ({ status, endPoint, pageTitle, pageSubTitle }) => {
   const navigate = useNavigate();
   const [cardDetails, setCardDetails] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(false);
   const [isRedirectToHome, setIsRedirectToHome] = useState(false);
 
-  const sendDataToParent = (redirectedValue) => { 
-    setIsRedirectToHome(redirectedValue)
+  const sendDataToParent = (redirectedValue) => {
+    setIsRedirectToHome(redirectedValue);
   };
   const errorHandler = () => {
     if (errors) {
@@ -38,12 +38,28 @@ const GetApiWrapper = ({ status, endPoint,pageTitle,pageSubTitle }) => {
     await axios
       .get(`${todoUrl}/api/v1/todo-controllers/${endPoint}/`)
       .then(({ data }) => {
-       const filterData= data.todo.filter((val)=>val.emailAddress === localStorage.getItem('userEmail') )
+        const filterData = data.todo.filter(
+          (val) => val.emailAddress === localStorage.getItem("userEmail")
+        );
+        const reporterTasks = filterData.filter(
+          (val) => val.assignUserEmailAddress !== "none"
+        );
+        const assigneeTasks = filterData.filter(
+          (val) => val.assignUserEmailAddress === val.email
+        );
+        if (status === "all") {
+          setCardDetails([...filterData]);
+        } else if (status === "reporter-task") {
+          setCardDetails([...reporterTasks]);
+        } else if (status === "assignee-task") {
+          setCardDetails([...assigneeTasks]);
+        } else {
+          const filterStatus = filterData.filter(
+            (val) => val.status === status
+          );
+          setCardDetails([...filterStatus]);
+        }
 
-      const filterStatus=filterData.filter((val)=>val.status===status)
-      console.log("filterStatus",filterStatus)
-        setCardDetails([...filterData]);
-        console.log(filterData)
         setLoading(false);
         setErrors(false);
       })
@@ -58,14 +74,13 @@ const GetApiWrapper = ({ status, endPoint,pageTitle,pageSubTitle }) => {
 
     errorHandler();
   };
-if(isRedirectToHome) {
-  navigate("/home");
-}
+  if (isRedirectToHome) {
+    navigate("/home");
+  }
   useEffect(() => {
     getAllTaskData();
   }, []);
 
- 
   return (
     <>
       <ToastContainer />
@@ -76,8 +91,12 @@ if(isRedirectToHome) {
         </Center>
       ) : (
         <>
-          <SectionTitle text={pageTitle} subText={pageSubTitle}
-          align="center" variant="h1" />
+          <SectionTitle
+            text={pageTitle}
+            subText={pageSubTitle}
+            align="center"
+            variant="h1"
+          />
           <Flex
             wrap={"wrap"}
             align="center"
@@ -87,9 +106,12 @@ if(isRedirectToHome) {
           >
             {cardDetails.length !== 0 ? (
               cardDetails.map((cardDetail, index) => (
-                <TaskCard key={cardDetail._id} cardDetail={cardDetail} index={index}
-                sendDataToParent={sendDataToParent} 
-                isRedirectToHomeParent={isRedirectToHome}
+                <TaskCard
+                  key={cardDetail._id}
+                  cardDetail={cardDetail}
+                  index={index}
+                  sendDataToParent={sendDataToParent}
+                  isRedirectToHomeParent={isRedirectToHome}
                 />
               ))
             ) : (
@@ -98,33 +120,47 @@ if(isRedirectToHome) {
                   <Center h="50vh" flexDirection={"column"}>
                     {" "}
                     <SectionTitle
-                      text={"There Is No Task"}
-                      subText={"Create Your First Task"}
+                      text={`There Is No ${
+                        status === "completed"
+                          ? "Completed"
+                          : status === "pending"
+                          ? "Pending"
+                          : status === "active"
+                          ? "Active"
+                          : status === "reporter-task"
+                          ? "Reporting"
+                          : status === "assignee-task"
+                          ? "Assignee"
+                          : "All"
+                      } Tasks`}
+                      subText={""}
                       align="center"
                       variant="h1"
                     />
                     <br />
                     <br />
-                    <Link to={"/add-tasks"}>
-                      <Button
-                        flex={1}
-                        fontSize={"sm"}
-                        rounded={"full"}
-                        bg={"blue.400"}
-                        color={"white"}
-                        boxShadow={
-                          "0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)"
-                        }
-                        _hover={{
-                          bg: "blue.500",
-                        }}
-                        _focus={{
-                          bg: "blue.500",
-                        }}
-                      >
-                        Add Task
-                      </Button>
-                    </Link>
+                    {status !== "assignee-task" && (
+                      <Link to={"/add-tasks"}>
+                        <Button
+                          flex={1}
+                          fontSize={"sm"}
+                          rounded={"full"}
+                          bg={"blue.400"}
+                          color={"white"}
+                          boxShadow={
+                            "0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)"
+                          }
+                          _hover={{
+                            bg: "blue.500",
+                          }}
+                          _focus={{
+                            bg: "blue.500",
+                          }}
+                        >
+                          Add Task
+                        </Button>
+                      </Link>
+                    )}
                   </Center>
                 </HStack>
               </>

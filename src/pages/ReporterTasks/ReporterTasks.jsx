@@ -5,7 +5,7 @@ const ReporterTasks = () => {
   return (
     <>
     <GetApiWrapper
-    status={"pending"}
+    status={"reporter-task"}
     endPoint={"get-all-todos"}
     pageTitle={'Reporter Tasks'}
     pageSubTitle={'The tasks you have assigned to someone'}

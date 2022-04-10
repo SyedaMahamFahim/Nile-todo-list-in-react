@@ -71,14 +71,16 @@ const TaskCard = ({
   return (
     <>
     <ToastContainer/>
-    {/* <Link to={`/task/${_id}`}> */}
+    
       <Box
         my={{ base: "1rem" }}
         mx={{ base: "1rem", md: "1.5rem", lg: "1rem" }}
         mb={{ md: "1.5rem", lg: "2rem" }}
         maxW={"320px"}
         w={"full"}
-        bg={useColorModeValue("white", "gray.900")}
+        bg={status === 'completed' ? '#7cde98a6':
+        status === 'pending' ? '#FFD19B': useColorModeValue("white", "gray.600")
+      }
         boxShadow={"2xl"}
         rounded={"lg"}
         p={6}
@@ -126,7 +128,7 @@ const TaskCard = ({
             bg={useColorModeValue("gray.50", "gray.800")}
             fontWeight={"400"}
           >
-            {assignUserEmailAddress !== "none" ? <BsPersonCheckFill /> : "none"}
+            {status}
           </Badge>
           <Badge
             px={2}
@@ -171,7 +173,7 @@ const TaskCard = ({
           </Button>
         </Stack>
       </Box>
-    {/* </Link> */}
+    
       <AlertDialog
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}

@@ -5,7 +5,7 @@ const GetAllTasks = () => {
   return (
     <>
     <GetApiWrapper
-    status={"completed"}
+    status={"all"}
     endPoint={"get-all-todos"}
     pageTitle={'All Tasks'}
     pageSubTitle={'All Your Created Tasks'}
