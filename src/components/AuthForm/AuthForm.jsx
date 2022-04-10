@@ -64,15 +64,23 @@ const AuthForm = () => {
    localStorage.setItem('userEmail',email)
     errorHandler();
     if (!errorHandler()) {
+      console.log('url',url)
       await axios
         .post(url, {
           email: email,
           password: password,
         })
         .then(({ data: { token } }) => {
-          localStorage.setItem("token", token);
-          navigate("/home");
-          setLoading(false);
+          if(signUp) {
+            setSignUp(false)
+            setUrl(`${baseUrl}login`)
+            setLoading(false);
+          }else{
+            localStorage.setItem("token", token);
+            navigate("/home");
+            
+          }
+          
         })
         .catch(() => {
           setErrors(true);
@@ -90,7 +98,7 @@ const AuthForm = () => {
     if (
       getUserToken === undefined ||
       getUserToken === null ||
-      getUserToken === ""
+      getUserToken === "" 
     ) {
       navigate("/");
     } else {

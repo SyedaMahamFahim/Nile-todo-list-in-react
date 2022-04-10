@@ -41,7 +41,7 @@ const GetApiWrapper = ({ status, endPoint, pageTitle, pageSubTitle }) => {
         const filterData = data.todo.filter(
           (val) => val.emailAddress === localStorage.getItem("userEmail")
         );
-        const priorityTask  = data.todo.filter(
+        const priorityTask  = filterData.filter(
           (val) => val.status === 'active' || val.status ==='pending'
         );
         const reporterTasks = filterData.filter(
