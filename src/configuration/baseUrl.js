@@ -1,2 +1,2 @@
-const baseUrl='http://net-lb-syeda-49a2339-1223006815.us-west-2.elb.amazonaws.com:8080/'
+const baseUrl='https://syeda.learn2saas.org:443/'
 export default baseUrl

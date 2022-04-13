@@ -10,7 +10,7 @@ const App = () => {
     e.preventDefault();
 
     axios
-      .post("http://net-lb-syeda-49a2339-1223006815.us-west-2.elb.amazonaws.com:8080/users", {
+      .post("https://syeda.learn2saas.org:443/users", {
         email: email,
         password: password,
       })
